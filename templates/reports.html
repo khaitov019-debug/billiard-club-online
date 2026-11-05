@@ -1,9 +1,0 @@
-<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#081018">
-<link rel="manifest" href="/manifest.webmanifest">
-<link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="BILYARD CLUB"><title>Hisobot</title><link rel="stylesheet" href="{{url_for('static',filename='style.css')}}"></head><body><header><h1>{{club_name}}</h1><nav><a href="/">Bosh sahifa</a><a href="/reports">Hisobot</a><a href="/settings">Sozlamalar</a><a href="/logout">Chiqish</a></nav></header><main><h2>📊 HISOBOT</h2><div class="tabs"><a href="?period=day">Kunlik</a><a href="?period=week">Haftalik</a><a href="?period=month">Oylik</a></div><div class="grid stats">{% for label,value in [('JAMI SAVDO',total),('SOF FOYDA',profit),('BILLIARD',billiard|string+' ta'),('TENNIS',tennis|string+' ta'),('SUV',water|string+' ta'),('GAZAK',snacks|string+' ta')] %}<section class="table"><h3>{{label}}</h3><div class="stat">{{value}}</div></section>{% endfor %}</div></main><script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(()=>{});}</script>
-</body></html>
