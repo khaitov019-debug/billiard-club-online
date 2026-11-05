@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#081018">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BILYARD CLUB">
+<title>BILYARD CLUB</title><link rel="stylesheet" href="{{url_for('static',filename='style.css')}}"></head>
+<body><header><h1>{{club_name}}</h1><nav><a href="/">Bosh sahifa</a><a href="/reports">Hisobot</a><a href="/settings">Sozlamalar</a><a href="/logout">Chiqish</a></nav></header>
+<main>{% with messages=get_flashed_messages() %}{% if messages %}<div class="notice">{% for m in messages %}{{m}}<br>{% endfor %}</div>{% endif %}{% endwith %}
+<h2>🎱 BILLIARD — {{tables|selectattr("kind","equalto","BILLIARD")|list|length}} TA &nbsp; | &nbsp; 🏓 TENNIS — {{tables|selectattr("kind","equalto","TENNIS")|list|length}} TA</h2>
+<div class="grid">{% for t in tables %}<section class="table {{'busy' if t.active else ''}} {{'paused' if t.paused else ''}}" data-id="{{t.id}}">
+<h3>{{'🎱' if t.kind=='BILLIARD' else '🏓'}} {{t.kind}} {{t.number}}</h3>
+<div class="timer">{{t.elapsed}}</div><p class="state">{{'⏸ PAUZA' if t.paused else ('🔴 BAND' if t.active else "🟢 BO'SH")}}</p>
+<p>{{money(t.price)}} / soat</p><p class="charge">Hisob: {{t.charge}}</p>
+{% if not t.active %}<form method="post" action="/table/{{t.id}}/start"><button class="green">BAND QILISH</button></form>
+{% else %}<div class="actions"><form method="post" action="/table/{{t.id}}/pause"><button class="gold">{{'DAVOM ETTIRISH' if t.paused else 'PAUZA'}}</button></form><form method="post" action="/table/{{t.id}}/finish" onsubmit="return confirm('Stolni tugatasizmi?')"><button class="red">TUGATISH</button></form></div>
+<form method="post" action="/sale" class="sale"><input type="hidden" name="table_id" value="{{t.id}}"><select name="product_id">{% for p in products %}<option value="{{p.id}}">{{p.name}} {{p.size}} — {{money(p.price)}}</option>{% endfor %}</select><input name="qty" type="number" min="1" value="1"><button>+ Mahsulot</button></form>{% endif %}
+</section>{% endfor %}</div></main>
+<script>
+async function refresh(){try{let r=await fetch('/api/status'),d=await r.json();for(let [id,v] of Object.entries(d)){let c=document.querySelector('.table[data-id="'+id+'"]');if(c){c.querySelector('.timer').textContent=v.elapsed;c.querySelector('.charge').textContent='Hisob: '+v.charge;}}}catch(e){}}
+setInterval(refresh,1000);
+</script><script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(()=>{});}</script>
+</body></html>

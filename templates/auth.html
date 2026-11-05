@@ -1,0 +1,10 @@
+<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#081018"><title>BILYARD CLUB — Kirish</title><link rel="stylesheet" href="{{url_for('static',filename='style.css')}}"><style>
+.auth-wrap{max-width:440px;margin:8vh auto;padding:28px;background:#111e29;border:1px solid #294154;border-radius:18px;color:#fff}
+.auth-wrap h2{color:#e6b83a}.auth-wrap input{width:100%;box-sizing:border-box;margin:9px 0;padding:13px;border-radius:9px;border:1px solid #40576a;background:#081018;color:white}
+.auth-wrap button,.auth-wrap a.btn{display:block;width:100%;box-sizing:border-box;margin-top:12px;padding:13px;text-align:center;border:0;border-radius:9px;background:#16845b;color:white;font-weight:bold;text-decoration:none}
+.auth-wrap a.google{background:#fff;color:#222}.muted{color:#b8c7d2;text-align:center}
+</style></head><body><div class="auth-wrap"><h1 style="color:#e6b83a">🎱 BILYARD CLUB</h1><h2>{{"YANGI AKKAUNT OCHISH" if mode=="register" else "AKKAUNTGA KIRISH"}}</h2>
+{% with messages=get_flashed_messages() %}{% if messages %}<div class="notice">{% for m in messages %}{{m}}<br>{% endfor %}</div>{% endif %}{% endwith %}
+<form method="post"><input name="email" type="email" placeholder="Email manzilingiz" required autocomplete="email"><input name="password" type="password" placeholder="Parol (kamida 6 belgi)" required autocomplete="{{'new-password' if mode=='register' else 'current-password'}}"><button>{{"RO'YXATDAN O'TISH" if mode=="register" else "KIRISH"}}</button></form>
+{% if google_enabled %}<a class="btn google" href="/auth/google">Google orqali kirish</a>{% else %}<p class="muted">Google orqali kirish keyingi sozlashda yoqiladi.</p>{% endif %}
+<p class="muted">{% if mode=="register" %}Akkauntingiz bormi? <a href="/login">Kirish</a>{% else %}Akkauntingiz yo'qmi? <a href="/register">Ro'yxatdan o'tish</a>{% endif %}</p></div></body></html>
